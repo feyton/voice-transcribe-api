@@ -1,0 +1,28 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "simple todo api using expressjs and sequelize orm",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "migrate": "npx sequelize db:migrate"
+  },
+  "author": "UMUHIRE Heritier <muhire416@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "audioconcat": "^0.1.4",
+    "axios": "^0.26.0",
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "form-data": "^4.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.4",
+    "mysql2": "^2.3.2",
+    "nodemon": "^2.0.13",
+    "sequelize": "^6.7.0",
+    "sequelize-cli": "^6.2.0",
+    "uuid": "^8.3.2"
+  }
+}
