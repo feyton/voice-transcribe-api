@@ -7,6 +7,7 @@ const fs = require('fs');
 
 const router = express.Router();
 const axios = require('axios');
+const matchContent = require('../utils/processing');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './uploads')
@@ -33,14 +34,14 @@ const audioController = async(req, res) => {
     .on("end", function (output) {
       console.log("Finished converting files");
       const filepath = 'http://'+req.headers.host + '/' + fileName;
-      return res.send({audioUrl: filepath, words:req.data});
+     const matched =  matchContent(req.data.message);
+     console.log('matched', matched.desc.replace(/<[^>]*>?/gm, ''));
+     const textIncludes = matched.desc.includes("simbashije kubona");
+      return res.send({audioUrl: filepath,...req.data,html:matched.desc,noMatch:textIncludes});
     });
 }
 
-
-
 // ################ controller to send data to mbaza api #####################
-
 
 const sendDataController = async (req,res,next) => {
   try {
@@ -65,9 +66,6 @@ const sendDataController = async (req,res,next) => {
     });
   }
 }
-
-
-
 
 
 const upload = multer({ storage: storage })
