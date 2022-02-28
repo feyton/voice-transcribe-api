@@ -13,7 +13,7 @@ app.use(cors())
 app.use(router);
 app.use(express.static(path.join(__dirname, '')));
 
-const port  = 5000;
+const port  = 5500;
 
 app.listen(port,()=>{
      
