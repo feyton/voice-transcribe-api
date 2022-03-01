@@ -43,8 +43,9 @@ const audioController = async(req, res) => {
 
 // ################ controller to send data to mbaza api #####################
 
-const sendDataController = async (req,res,next) => {
+const sendDataController = async (req,res) => {
   try {
+    console.log('start');
     const formData = new FormData();
     formData.append('audio',fs.createReadStream(req.file.path));
     const {data} = await  axios.post('https://mbaza.dev.cndp.org.rw/deepspeech/api/api/v1/stt/http', formData,{
@@ -54,11 +55,17 @@ const sendDataController = async (req,res,next) => {
       }
     });
     // ######## add your logic here ##############
-    
+    console.log('data');
 
 
     req.data = data;
-    next();
+    // next();
+    console.log("Finished converting files");
+    // const filepath = 'http://'+req.headers.host + '/' + fileName;
+   const matched =  matchContent(req.data.message);
+   console.log('matched', matched.desc.replace(/<[^>]*>?/gm, ''));
+   const textIncludes = matched.desc.includes("simbashije kubona");
+    return res.send({...req.data, html:matched.desc,noMatch:textIncludes});
     
   } catch (error) {
     res.send({
@@ -68,6 +75,6 @@ const sendDataController = async (req,res,next) => {
 }
 
 
-const upload = multer({ storage: storage })
-router.post('/playSentence',upload.single('audio'),sendDataController,audioController);
+const upload = multer({ storage: storage });
+router.post('/playSentence',upload.single('audio'),sendDataController);
 module.exports = router;
