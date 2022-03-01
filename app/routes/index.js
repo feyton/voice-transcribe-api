@@ -45,6 +45,7 @@ const audioController = async(req, res) => {
 
 const sendDataController = async (req,res) => {
   try {
+    console.log('start');
     const formData = new FormData();
     formData.append('audio',fs.createReadStream(req.file.path));
     const {data} = await  axios.post('https://mbaza.dev.cndp.org.rw/deepspeech/api/api/v1/stt/http', formData,{
@@ -54,7 +55,7 @@ const sendDataController = async (req,res) => {
       }
     });
     // ######## add your logic here ##############
-    
+    console.log('data');
 
 
     req.data = data;
@@ -74,6 +75,6 @@ const sendDataController = async (req,res) => {
 }
 
 
-// const upload = multer({ storage: storage })
-router.post('/playSentence',sendDataController);
+const upload = multer({ storage: storage });
+router.post('/playSentence',upload.single('audio'),sendDataController);
 module.exports = router;
